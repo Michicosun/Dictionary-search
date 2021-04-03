@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <QFileDialog>
 
-const std::string path = "./words1.txt";
+const std::string path = "./words.txt";
 
 class Finder : public QObject
 {
