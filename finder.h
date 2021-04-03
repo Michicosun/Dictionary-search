@@ -7,8 +7,11 @@
 #include <QDebug>
 #include <fstream>
 #include <string>
+#include <cctype>
+#include <algorithm>
+#include <QFileDialog>
 
-const std::string path = "words.txt";
+const std::string path = "./words1.txt";
 
 class Finder : public QObject
 {
@@ -24,6 +27,10 @@ public:
 
     void moveToTop();
 
+    void changeMod(int x);
+
+    bool isFinding();
+
     ~Finder();
 
 public slots:
@@ -36,6 +43,7 @@ private:
     bool canFind;
     QString pattern;
     std::ifstream input;
+    int findingType;
 };
 
 #endif // FINDER_H

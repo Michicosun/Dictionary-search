@@ -19,10 +19,17 @@ public:
 
     void stopReading();
 
+    void startReading();
+
 private slots:
 
     void on_pattern_textChanged();
+
     void update(QString word);
+
+    void on_substring_button_clicked();
+
+    void on_subsequence_button_clicked();
 
 private:
     Ui::MainWindow *ui;
