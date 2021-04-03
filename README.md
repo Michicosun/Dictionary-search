@@ -1,5 +1,5 @@
 # Dictionary-search
-Selection assignment for summer internship at JetBrains
+Selection assignment for summer internship at JetBrains C++/Qt
 
 Works by gradually reading words from a file. 
 
