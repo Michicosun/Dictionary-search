@@ -72,13 +72,15 @@ void Finder::find() {
         if (findingType == 1) {
             if (checkSequences(QString::fromStdString(word).toLower(), pattern)) {
                 emit emitWord(QString::fromStdString(word) + "\n");
+                QThread::msleep(5);
             }
         } else {
             if (checkStrings(QString::fromStdString(word).toLower(), pattern)) {
                 emit emitWord(QString::fromStdString(word) + "\n");
+                QThread::msleep(5);
             }
         }
-        QThread::msleep(10);
+
     }
 }
 
