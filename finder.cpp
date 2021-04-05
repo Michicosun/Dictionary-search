@@ -1,26 +1,8 @@
 #include "finder.h"
 
-Finder::Finder() : canFind(false), pattern(""), input(path), findingType(0) {
-    if (!input) {
-        QString fileName = QFileDialog::getOpenFileName(0,
-                                    QString::fromUtf8("Открыть файл"),
-                                    QDir::currentPath(),
-                                    "All files (*.*)");
-        input = std::ifstream(fileName.toStdString());
-        if (!input) exit(0);
-    }
-}
+Finder::Finder() : canFind(false), pattern(""), findingType(0) {}
 
-Finder::Finder(QString word) : canFind(false), pattern(word), input(path), findingType(0) {
-    if (!input) {
-        QString fileName = QFileDialog::getOpenFileName(0,
-                                    QString::fromUtf8("Открыть файл"),
-                                    QDir::currentPath(),
-                                    "All files (*.*)");
-        input = std::ifstream(fileName.toStdString());
-        if (!input) exit(0);
-    }
-}
+Finder::Finder(QString word) : canFind(false), pattern(word), findingType(0) {}
 
 void Finder::changePattern(QString word) {
     swap(word, pattern);
@@ -42,6 +24,10 @@ void Finder::changeMod(int x) {
 
 bool Finder::isFinding() {
     return canFind;
+}
+
+void Finder::setInput(std::ifstream &&newIn) {
+    swap(input, newIn);
 }
 
 Finder::~Finder() {

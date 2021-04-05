@@ -1,12 +1,14 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow), pFinder(), pTh() {
     ui->setupUi(this);
     connect(&pFinder, &Finder::emitWord, this, &MainWindow::update);
     connect(&pTh, &QThread::started, &pFinder, &Finder::find);
+
+    pFinder.setInput(openFile());
     pFinder.moveToThread(&pTh);
+
     QPalette p1 = palette();
     p1.setBrush(QPalette::ButtonText, Qt::blue);
     ui->substring_button->setPalette(p1);
@@ -14,6 +16,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     QPalette p2 = palette();
     p2.setBrush(QPalette::ButtonText, Qt::black);
     ui->subsequence_button->setPalette(p2);
+}
+
+std::ifstream MainWindow::openFile() {
+    std::ifstream input(path);
+    if (!input) {
+        QString fileName = QFileDialog::getOpenFileName(this,
+                                    QString::fromUtf8("Открыть файл"),
+                                    QDir::currentPath(),
+                                    "All files (*.*)");
+        input = std::ifstream(fileName.toStdString());
+        if (!input) exit(0);
+    }
+    return input;
 }
 
 MainWindow::~MainWindow() {
@@ -25,6 +40,7 @@ void MainWindow::stopReading() {
     pTh.quit();
     pFinder.changeFlag(false);
     pTh.wait();
+    QCoreApplication::processEvents();
     ui->words_list->clear();
 }
 

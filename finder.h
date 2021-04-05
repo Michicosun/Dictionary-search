@@ -11,8 +11,6 @@
 #include <algorithm>
 #include <QFileDialog>
 
-const std::string path = "./words.txt";
-
 class Finder : public QObject
 {
     Q_OBJECT
@@ -30,6 +28,8 @@ public:
     void changeMod(int x);
 
     bool isFinding();
+
+    void setInput(std::ifstream&& newIn);
 
     ~Finder();
 
