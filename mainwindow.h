@@ -10,7 +10,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-const std::string path = "./words1.txt";
+const std::string path = "./words.txt";
 
 class MainWindow : public QMainWindow
 {
