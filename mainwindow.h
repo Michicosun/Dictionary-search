@@ -3,14 +3,14 @@
 
 #include <QThread>
 #include <QMainWindow>
+#include <QFile>
 #include "finder.h"
-#include <fstream>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
-const std::string path = "./words.txt";
+const QString path = "./words.txt";
 
 class MainWindow : public QMainWindow
 {
@@ -24,7 +24,7 @@ public:
 
     void startReading();
 
-    std::ifstream openFile();
+    QString openFile();
 
 private slots:
 

@@ -5,11 +5,8 @@
 #include <QString>
 #include <QThread>
 #include <QDebug>
-#include <fstream>
-#include <string>
-#include <cctype>
-#include <algorithm>
 #include <QFileDialog>
+#include <QTextStream>
 
 class Finder : public QObject
 {
@@ -23,13 +20,11 @@ public:
 
     void changeFlag(bool nxt);
 
-    void moveToTop();
-
     void changeMod(int x);
 
     bool isFinding();
 
-    void setInput(std::ifstream&& newIn);
+    void setPath(QString path);
 
     ~Finder();
 
@@ -42,8 +37,8 @@ signals:
 private:
     bool canFind;
     QString pattern;
-    std::ifstream input;
     int findingType;
+    QFile file;
 };
 
 #endif // FINDER_H

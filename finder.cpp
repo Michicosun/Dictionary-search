@@ -13,11 +13,6 @@ void Finder::changeFlag(bool nxt) {
     canFind = nxt;
 }
 
-void Finder::moveToTop() {
-    input.clear();
-    input.seekg(0, std::ios::beg);
-}
-
 void Finder::changeMod(int x) {
     findingType = x;
 }
@@ -26,15 +21,13 @@ bool Finder::isFinding() {
     return canFind;
 }
 
-void Finder::setInput(std::ifstream &&newIn) {
-    swap(input, newIn);
+void Finder::setPath(QString path) {
+    file.setFileName(path);
 }
 
 Finder::~Finder() {
-    input.close();
+    if (file.isOpen()) file.close();
 }
-
-using std::string;
 
 bool checkSequences(const QString& text, const QString& pat) {
     int l = 0, r = 0;
@@ -53,20 +46,24 @@ bool checkStrings(const QString& text, const QString& pat) {
 }
 
 void Finder::find() {
-    string word;
-    while (canFind && input >> word) {
+    file.open(QIODevice::ReadOnly);
+    QTextStream input(&file);
+
+    QString word;
+    while (canFind && !input.atEnd()) {
+        input >> word;
         if (findingType == 1) {
-            if (checkSequences(QString::fromStdString(word).toLower(), pattern)) {
-                emit emitWord(QString::fromStdString(word) + "\n");
+            if (checkSequences(word.toLower(), pattern)) {
+                emit emitWord(word + "\n");
                 QThread::msleep(10);
             }
         } else {
-            if (checkStrings(QString::fromStdString(word).toLower(), pattern)) {
-                emit emitWord(QString::fromStdString(word) + "\n");
+            if (checkStrings(word.toLower(), pattern)) {
+                emit emitWord(word + "\n");
                 QThread::msleep(10);
             }
         }
-
     }
+    file.close();
 }
 

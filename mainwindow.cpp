@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(&pFinder, &Finder::emitWord, this, &MainWindow::update);
     connect(&pTh, &QThread::started, &pFinder, &Finder::find);
 
-    pFinder.setInput(openFile());
+    pFinder.setPath(openFile());
     pFinder.moveToThread(&pTh);
 
     QPalette p1 = palette();
@@ -18,17 +18,15 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     ui->subsequence_button->setPalette(p2);
 }
 
-std::ifstream MainWindow::openFile() {
-    std::ifstream input(path);
-    if (!input) {
+QString MainWindow::openFile() {
+    if (!QFile::exists(path)) {
         QString fileName = QFileDialog::getOpenFileName(this,
                                     QString::fromUtf8("Открыть файл"),
                                     QDir::currentPath(),
                                     "All files (*.*)");
-        input = std::ifstream(fileName.toStdString());
-        if (!input) exit(0);
-    }
-    return input;
+        if (QFile::exists(fileName)) return fileName;
+        else exit(0);
+    } else return path;
 }
 
 MainWindow::~MainWindow() {
@@ -47,7 +45,6 @@ void MainWindow::stopReading() {
 void MainWindow::startReading() {
     if (ui->pattern->text().size() > 0) {
         pFinder.changePattern(ui->pattern->text());
-        pFinder.moveToTop();
         pFinder.changeFlag(true);
         pTh.start();
     }
